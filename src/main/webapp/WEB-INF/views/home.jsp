@@ -20,8 +20,9 @@
     	</c:when>
     	<c:otherwise>
     		<a href="<c:url value="/login" />">登录</a> |
-    		<a href="<c:url value="/spitter/register" />">注册</a> 
-    	</c:otherwise>
+    		<a href="<c:url value="/spitter/register" />">注册</a>
+            <a href="<c:url value="/manager/login" />">管理员登录</a>
+        </c:otherwise>
     </c:choose>
     
     

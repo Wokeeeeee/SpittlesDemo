@@ -14,6 +14,9 @@ public class Spittle {
 	private final Spitter spitter;
 	private final String message;
 	private final Date postedTime;
+	private boolean ischecked;
+	private Long checkerid;
+	private Date checktime;
 
 	/**
 	 * 构造方法
@@ -32,6 +35,7 @@ public class Spittle {
 		this.spitter = spitter;
 		this.message = message;
 		this.postedTime = postedTime;
+		ischecked=false;
 	}
 
 	/**
@@ -70,4 +74,19 @@ public class Spittle {
 		return this.spitter;
 	}
 
+	public Long getCheckerid() {
+		return checkerid;
+	}
+
+	public void setCheckerid(Long checkerid) {
+		this.checkerid = checkerid;
+	}
+
+	public Date getChecktime() {
+		return checktime;
+	}
+
+	public void setChecktime(Date checktime) {
+		this.checktime = checktime;
+	}
 }
