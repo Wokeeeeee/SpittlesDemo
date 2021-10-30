@@ -81,13 +81,13 @@ public class JdbcManagerRepository implements ManagerRepository {
 
     private static class ManagerRowMapper implements RowMapper<Manager> {
         public Manager mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Manager(rs.getLong("id"), rs.getString("username"), null, rs.getString("fullname"),
+            return new Manager(rs.getLong("id"), rs.getString("username"), rs.getString("password"), rs.getString("full_name"),
                     rs.getString("email"), rs.getString("phoneNo"), rs.getInt("delete"));
         }
     }
 
-    private static final String INSERT_Manager = "insert into Manager (username, password, fullname, email,phoneNo,delete) values (?, ?,?, ?, ?, ?)";
+    private static final String INSERT_Manager = "insert into Manager (username, password, full_name, email,phoneNo,delete) values (?, ?,?, ?, ?, ?)";
 
-    private static final String SELECT_Manager = "select id, username, fullname, email, phoneNo from Manager";
+    private static final String SELECT_Manager = "select id,username, password,full_name, email, phoneNo ,delete from Manager";
 
 }

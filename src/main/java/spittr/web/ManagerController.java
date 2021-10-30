@@ -124,4 +124,9 @@ public class ManagerController {
         }
     }
 
+    @RequestMapping(value = "/work" ,method = GET)
+    public String showManagerPage(){
+        return "managerWork";
+    }
+
 }
