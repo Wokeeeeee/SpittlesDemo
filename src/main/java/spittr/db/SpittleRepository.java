@@ -2,6 +2,7 @@ package spittr.db;
 
 import java.util.List;
 
+import spittr.domain.Manager;
 import spittr.domain.Spittle;
 
 /**
@@ -34,6 +35,13 @@ public interface SpittleRepository {
 	 * @return 最新吐槽
 	 */
 	List<Spittle> findRecent(int count);
+
+
+	List<Spittle> findNotCheckedRecent(int count);
+
+	void deleteUnpassed(Long id);
+
+	void updatePassed(Long id,Manager manager);
 
 	/**
 	 * 依据id查找吐槽

@@ -90,4 +90,5 @@ public class JdbcSpitterRepository implements SpitterRepository {
 
 	private static final String SELECT_SPITTER = "select id, username, first_name, last_name, email from Spitter";
 
+
 }

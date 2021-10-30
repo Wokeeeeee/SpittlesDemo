@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import spittr.db.SpittleRepository;
 import spittr.domain.Spitter;
 import spittr.domain.Spittle;
+
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 /**
  * 吐槽控制器类
  * 

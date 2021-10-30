@@ -3,25 +3,18 @@ package spittr.web;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import javax.print.attribute.standard.MediaName;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import spittr.db.ManagerRepository;
-import spittr.db.SpitterRepository;
 import spittr.domain.Manager;
-import spittr.domain.Spitter;
 
 /**
  * 吐槽者控制类
@@ -126,7 +119,20 @@ public class ManagerController {
 
     @RequestMapping(value = "/work" ,method = GET)
     public String showManagerPage(){
-        return "managerWork";
+        return "checking";
     }
 
+
+    @RequestMapping(value = "/pass/{spittleId}" ,method = POST)
+    public String passSpittle(@PathVariable("spittleId") long spittleId )
+            throws Exception {
+        System.out.println(spittleId);
+        return "checking";
+    }
+
+    @RequestMapping(value = "/delete" ,method = POST)
+    public String deleteSpittle(HttpServletRequest request, SpittleForm form, Model model, HttpSession session)
+            throws Exception {
+        return "checking";
+    }
 }
