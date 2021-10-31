@@ -40,7 +40,7 @@ public class SpittleController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Spittle> spittles(@RequestParam(value = "count", defaultValue = "20") int count) {
-		return spittleRepository.findRecent(count);
+		return spittleRepository.findRecent(count,0);
 	}
 
 	/**

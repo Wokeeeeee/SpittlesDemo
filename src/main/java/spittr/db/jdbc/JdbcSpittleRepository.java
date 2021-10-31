@@ -41,18 +41,29 @@ public class JdbcSpittleRepository implements SpittleRepository {
     }
 
     @Override
+    public long countPass() {
+        return jdbc.queryForLong("select count(*) from Spittle where ischecked is not null");
+    }
+
+    @Override
+    public long countUncheck() {
+        return jdbc.queryForLong("select count(*) from Spittle where ischecked is null");
+    }
+
+    @Override
     public long count() {
         return jdbc.queryForLong("select count(id) from Spittle");
     }
 
     @Override
     public List<Spittle> findRecent() {
-        return findRecent(10);
+        return findRecent(10, 0);
     }
 
     @Override
-    public List<Spittle> findRecent(int count) {
-        return jdbc.query(SELECT_CHECKED_RECENT_SPITTLES, new SpittleRowMapper(), count);
+    public List<Spittle> findRecent(int count, int start_index) {
+        System.out.println("start:"+start_index*count+"  end:"+ (start_index+1)*count);
+        return jdbc.query(SELECT_CHECKED_RECENT_SPITTLES, new SpittleRowMapper(), start_index*count,count);//第二个参数为偏移量
     }
 
     @Override
@@ -108,18 +119,19 @@ public class JdbcSpittleRepository implements SpittleRepository {
     }
 
     @Override
-    public List<Spittle> findNotCheckedRecent(int count) {
-        return jdbc.query(SELECT_UNCHECKED_RECENT_SPITTLES, new SpittleRowMapper(), count);
+    public List<Spittle> findNotCheckedRecent(int count, int start_index) {
+        System.out.println("start:"+start_index*count+"  end:"+ (start_index+1)*count);
+        return jdbc.query(SELECT_UNCHECKED_RECENT_SPITTLES, new SpittleRowMapper(), start_index*count,count);
     }
 
     @Override
     public void deleteUnpassed(Long id) {
-         jdbc.update(DELETE_SPITTER, id);
+        jdbc.update(DELETE_SPITTER, id);
     }
 
     @Override
-    public void updatePassed(Long id,Manager manager) {
-        jdbc.update(UPDATE_SPITTER,manager.getId(),new Date(),id);
+    public void updatePassed(Long id, Manager manager) {
+        jdbc.update(UPDATE_SPITTER, manager.getId(), new Date(), id);
     }
 
     private static final String SELECT_SPITTLE = "select sp.id, s.id as spitterId, s.username, s.password, s.first_name, s.last_name, s.email, sp.message, sp.postedTime from Spittle sp, Spitter s where sp.spitter = s.id";
@@ -127,8 +139,8 @@ public class JdbcSpittleRepository implements SpittleRepository {
     private static final String SELECT_SPITTLES_BY_SPITTER_ID = SELECT_SPITTLE
             + " and s.id=? order by sp.postedTime desc";
     private static final String SELECT_RECENT_SPITTLES = SELECT_SPITTLE + " order by sp.postedTime desc limit ?";
-    private static final String SELECT_UNCHECKED_RECENT_SPITTLES = SELECT_SPITTLE + " and sp.ischecked is null" + " order by sp.postedTime desc limit ?";
-    private static final String SELECT_CHECKED_RECENT_SPITTLES=SELECT_SPITTLE+" and sp.ischecked is not null" + " order by sp.postedTime desc limit ?";
+    private static final String SELECT_UNCHECKED_RECENT_SPITTLES = SELECT_SPITTLE + " and sp.ischecked is null" + " order by sp.postedTime desc limit ?,?";
+    private static final String SELECT_CHECKED_RECENT_SPITTLES = SELECT_SPITTLE + " and sp.ischecked is not null" + " order by sp.postedTime desc limit ?,?";
 
     private static final String UPDATE_SPITTER = "update Spittle set ischecked = true , checkerid=?, checktime=? where id =?";
     private static final String DELETE_SPITTER = "delete from Spittle where id = ?";

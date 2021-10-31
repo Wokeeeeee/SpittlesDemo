@@ -21,17 +21,22 @@
     <h1>待审核内容</h1>
     <ul class="spittleList">
         <div class="spittleList">
-            <h1>最近吐槽</h1>
+            第1页共${maxPage}页
+            <form action="checking">
+                每页显示个数：<input type="number" name="count" min="2" max="50" value="${count}">
+                <input type="submit" value="跳转">到第<input type="number" value="${curPage}" name="pageIndex" min="0" max="${maxPage}">页
+            </form>
             <ul class="spittleList">
                 <c:forEach items="${spittleList}" var="spittle" >
                     <li id="spittle_<c:out value="${spittle.id}"/>">
-                        <div class="spittleMessage"><c:out value="${spittle.message}" /></div>
+                        <div class="spittleMessage">
+                            ${spittle.id}<br><c:out value="${spittle.message}" /></div>
                         <div class="spittleTime">
                             <fmt:formatDate value="${spittle.postedTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
                             by <c:out value="${spittle.spitter.userName }" />
                         </div>
                     </li>
-                    <form action="checking/${spittle.id}" method="post">
+                    <form action="checking/check/${spittle.id}" method="post">
                         <input name="check" type="checkbox" value="pass" checked="checked">通过
                         <input name="check" type="checkbox" value="delete">删除
                         <input type="submit" value="提交" name="submit">

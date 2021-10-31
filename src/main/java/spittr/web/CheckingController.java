@@ -27,23 +27,29 @@ public class CheckingController {
     private SpittleRepository spittleRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Spittle> spittles(@RequestParam(value = "count", defaultValue = "20") int count) {
-        return spittleRepository.findNotCheckedRecent(count);
+    public List<Spittle> spittles(@RequestParam(value = "count", defaultValue = "20") int count, @RequestParam(value = "pageIndex" ,defaultValue = "1") int pageIndex,HttpSession session) {
+
+        session.setAttribute("count",count);
+        session.setAttribute("maxPage",(int)spittleRepository.countUncheck()/count+1);
+        session.setAttribute("curPage",pageIndex);
+        System.out.println("当前总页数："+(spittleRepository.countUncheck()/count+1)+"\n一页显示："+count+"\n当前页码："+pageIndex);
+        return spittleRepository.findNotCheckedRecent(count, pageIndex-1);
     }
 
-    @RequestMapping(value = "/{spittleID}", method = POST)
-    public String showSpitterProfile(@PathVariable String spittleID, HttpServletRequest request, HttpSession session) {
+    @RequestMapping(value = "/jump",method = POST)
+    public String jumpPage(@RequestParam(value = "pageIndex", defaultValue = "") int index,HttpSession session){
+        session.setAttribute("pageIndex",index);
+        return "checking";
+    }
 
-        /*
-         * @PathVariable("xxx") 通过 @PathVariable
-         * 可以将URL中占位符参数{xxx}绑定到处理器类的方法形参中@PathVariable(“xxx“)
-         * 用于将请求URL中的模板变量映射到功能处理方法的参数上，即取出uri模板中的变量作为参数
-         */
+    @RequestMapping(value = "check/{spittleID}", method = POST)
+    public String showSpitterProfile(@PathVariable String spittleID, HttpServletRequest request, HttpSession session) {
         System.out.println(request.getParameter("check"));
         System.out.println(spittleID);
         if (request.getParameter("check").equals("pass")) {
             spittleRepository.updatePassed(Long.parseLong(spittleID), (Manager) session.getAttribute("manager"));
-        }else if (request.getParameter("check").equals("delete")){
+        }
+        else if (request.getParameter("check").equals("delete")) {
             spittleRepository.delete(Long.parseLong(spittleID));
         }
         System.out.println("操作完成");

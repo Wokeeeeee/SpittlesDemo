@@ -20,6 +20,9 @@ public interface SpittleRepository {
 	 */
 	long count();
 
+	long countPass();
+	long countUncheck();
+
 	/**
 	 * 取得最新的10条吐槽
 	 * 
@@ -34,10 +37,10 @@ public interface SpittleRepository {
 	 *            吐槽数量
 	 * @return 最新吐槽
 	 */
-	List<Spittle> findRecent(int count);
+	List<Spittle> findRecent(int count,int start_index);
 
 
-	List<Spittle> findNotCheckedRecent(int count);
+	List<Spittle> findNotCheckedRecent(int count,int start_index);
 
 	void deleteUnpassed(Long id);
 
