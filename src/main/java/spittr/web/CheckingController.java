@@ -26,21 +26,25 @@ public class CheckingController {
     @Autowired
     private SpittleRepository spittleRepository;
 
+    int count=20;
+    int curPage=1;
     @RequestMapping(method = RequestMethod.GET)
-    public List<Spittle> spittles(@RequestParam(value = "count", defaultValue = "20") int count, @RequestParam(value = "pageIndex" ,defaultValue = "1") int pageIndex,HttpSession session) {
+    public List<Spittle> spittles(HttpSession session) {
         int maxPage = (int) (spittleRepository.count() % count == 0 ? (spittleRepository.count() / count) : (spittleRepository.count() / count + 1));
 
         session.setAttribute("count",count);
         session.setAttribute("maxPage",maxPage);
-        session.setAttribute("curPage",pageIndex);
-        System.out.println("当前总页数："+(spittleRepository.countUncheck()/count+1)+"\n一页显示："+count+"\n当前页码："+pageIndex);
-        return spittleRepository.findNotCheckedRecent(count, pageIndex-1);
+        session.setAttribute("curPage",curPage);
+        System.out.println("当前总页数："+(spittleRepository.countUncheck()/count+1)+"\n一页显示："+count+"\n当前页码："+curPage);
+        return spittleRepository.findNotCheckedRecent(count, curPage-1);
     }
 
-    @RequestMapping(value = "/jump",method = POST)
-    public String jumpPage(@RequestParam(value = "pageIndex", defaultValue = "") int index,HttpSession session){
-        session.setAttribute("pageIndex",index);
-        return "checking";
+    @RequestMapping(method = POST)
+    public String jumpPage(@RequestParam(value = "count")int c,@RequestParam(value = "curPage") int p,HttpSession session){
+        System.out.println("checking post");
+       this.count=c;
+       this.curPage=p;
+        return "redirect:/checking";
     }
 
     @RequestMapping(value = "check/{spittleID}", method = POST)
