@@ -68,9 +68,9 @@ public class ManagerController {
         }
 
     }
+
     @RequestMapping(value = "/home", method = GET)
     public String getHomePage(Model model) {
-        model.addAttribute(new Manager());
         return "managerHome";
     }
 
@@ -82,25 +82,23 @@ public class ManagerController {
      */
     @RequestMapping(value = "/register", method = GET)
     public String showRegistrationForm(Model model) {
-        model.addAttribute(new Manager());
         return "managerRegisterForm";
     }
 
     /**
      * 提交注册信息，提交成功后跳转到用户信息
-     *
-     * @param manager
-     * @param errors
      * @return
      */
     @RequestMapping(value = "/register", method = POST)
-    public String processRegistration(@Valid Manager manager, Errors errors) {
-        if (errors.hasErrors()) {
-            return "managerRegisterForm";
-        }
-
-        managerRepository.save(manager);
-        return "redirect:/manager/" + manager.getUserName();
+    public String processRegistration(HttpServletRequest request) {
+        String fullname = request.getParameter("fullname");
+        String email = request.getParameter("email");
+        String phoneNo = request.getParameter("phoneNo");
+        String userName = request.getParameter("userName");
+        String password = request.getParameter("password");
+        //this(null, userName, password, fullname, email, phoneNo, delete);
+        managerRepository.save(new Manager(userName,password,fullname,email,phoneNo,0));
+        return "redirect:/manager/list";
     }
 
 
@@ -121,7 +119,6 @@ public class ManagerController {
 
         Manager manager = managerRepository.findByUserName(userName);
         if (manager != null) {
-            model.addAttribute(manager);
             return "managerProfile";
         }
         else {
@@ -134,24 +131,39 @@ public class ManagerController {
         return "checking";
     }
 
+    private int Mcount = 20;
+    private int McurPage = 1;
+
     @RequestMapping(value = "/list", method = GET)
-    public String getManagerList() {
+    public String getManagerList(HttpSession session) {
+        //更新当前参数
+        session.setAttribute("Mcount", Mcount);
+        session.setAttribute("McurPage", McurPage);
+        int MtotalPage = (int) (managerRepository.count() % Mcount == 0 ? (managerRepository.count() / Mcount) : (managerRepository.count() / Mcount + 1));
+        session.setAttribute("MmaxPage", MtotalPage);
+
+        session.setAttribute("managerList", managerRepository.findRange(McurPage - 1, Mcount));
         return "managerList";
     }
 
     @RequestMapping(value = "/list", method = POST)
-    public String processList() {
-        return "managerList";
+    public String processList(@RequestParam(value = "Mcount")int Mcount,@RequestParam(value = "McurPage") int McurPage) {
+        this.Mcount =Mcount;
+        this.McurPage = McurPage;
+        return "redirect:/manager/list";
     }
 
     @RequestMapping(value = "/delete/{id}", method = POST)
-    public String processDelete(@RequestParam String id,HttpSession session) {
-        if (((Manager)session.getAttribute("manager")).getId()==Long.parseLong(id)){
+    public String processDelete(@PathVariable String id, HttpSession session) {
+        Manager manager = (Manager) session.getAttribute("manager");
+        System.out.println(manager.getId());
+        if (manager.getId().toString().equals(id)) {
             System.out.println("you can not delete yourself");
-        }else {
+        }
+        else {
             managerRepository.delete(Long.parseLong(id));
         }
-        return "managerList";
+        return "redirect:/manager/list";
     }
 
     @RequestMapping(value = "/update", method = GET)
@@ -160,8 +172,8 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "/update", method = POST)
-    public String processUpdate(HttpSession session,HttpServletRequest request) {
-        Manager manager=(Manager)session.getAttribute("manager");
+    public String processUpdate(HttpSession session, HttpServletRequest request) {
+        Manager manager = (Manager) session.getAttribute("manager");
         manager.setFullname(request.getParameter("fullname"));
         manager.setEmail(request.getParameter("email"));
         manager.setPhoneNo(request.getParameter("phoneNo"));

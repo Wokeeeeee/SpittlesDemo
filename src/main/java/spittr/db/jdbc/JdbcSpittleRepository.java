@@ -62,7 +62,7 @@ public class JdbcSpittleRepository implements SpittleRepository {
 
     @Override
     public List<Spittle> findRecent(int count, int start_index) {
-        System.out.println("start:"+start_index*count+"  end:"+ (start_index+1)*count);
+        //System.out.println("start:"+start_index*count+"  end:"+ (start_index+1)*count);
         return jdbc.query(SELECT_CHECKED_RECENT_SPITTLES, new SpittleRowMapper(), start_index*count,count);//第二个参数为偏移量
     }
 
@@ -120,7 +120,7 @@ public class JdbcSpittleRepository implements SpittleRepository {
 
     @Override
     public List<Spittle> findNotCheckedRecent(int count, int start_index) {
-        System.out.println("start:"+start_index*count+"  end:"+ (start_index+1)*count);
+        //System.out.println("start:"+start_index*count+"  end:"+ (start_index+1)*count);
         return jdbc.query(SELECT_UNCHECKED_RECENT_SPITTLES, new SpittleRowMapper(), start_index*count,count);
     }
 

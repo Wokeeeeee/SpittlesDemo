@@ -28,9 +28,10 @@ public class CheckingController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Spittle> spittles(@RequestParam(value = "count", defaultValue = "20") int count, @RequestParam(value = "pageIndex" ,defaultValue = "1") int pageIndex,HttpSession session) {
+        int maxPage = (int) (spittleRepository.count() % count == 0 ? (spittleRepository.count() / count) : (spittleRepository.count() / count + 1));
 
         session.setAttribute("count",count);
-        session.setAttribute("maxPage",(int)spittleRepository.countUncheck()/count+1);
+        session.setAttribute("maxPage",maxPage);
         session.setAttribute("curPage",pageIndex);
         System.out.println("当前总页数："+(spittleRepository.countUncheck()/count+1)+"\n一页显示："+count+"\n当前页码："+pageIndex);
         return spittleRepository.findNotCheckedRecent(count, pageIndex-1);

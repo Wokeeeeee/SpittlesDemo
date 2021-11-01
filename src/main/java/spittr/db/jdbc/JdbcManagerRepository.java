@@ -105,7 +105,7 @@ public class JdbcManagerRepository implements ManagerRepository {
 
     private static final String SELECT_Manager = "select id,username,full_name, email, phoneNo ,delete from Manager";
 
-    private static final String SELECT_RANGE_MANAGER = "select id,username,full_name, email, phoneNo ,delete from Manager, limit ?,?";
+    private static final String SELECT_RANGE_MANAGER = "select id,username,full_name, email, phoneNo ,delete from Manager limit ?,?";
 
     private static final String UPDATE_MANAGER = "update Manager set username=?,full_name=?,password=?,email=?,phoneNo=? where id =?";
 }
