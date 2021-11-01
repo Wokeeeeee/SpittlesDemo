@@ -25,6 +25,7 @@
         spittles need to be checked by managers, and now there is no spittle yet.
       </c:when>
       <c:otherwise>
+        <br>
         第1页共${SPmaxPage}页
         <form action="spittles/jump" method="post" id="spittles_sub">
           每页显示个数：<input type="number" name="SPcount" min="2" max="50" value="${SPcount}">

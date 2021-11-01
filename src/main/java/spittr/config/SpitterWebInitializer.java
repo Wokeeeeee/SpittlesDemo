@@ -80,4 +80,5 @@ public class SpitterWebInitializer extends AbstractAnnotationConfigDispatcherSer
 		servlet.addMapping("/console/*");
 	}
 
+
 }
