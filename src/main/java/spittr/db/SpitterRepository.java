@@ -64,4 +64,6 @@ public interface SpitterRepository {
 	 */
 	List<Spitter> findAll();
 
+	List<Spitter> findRange(int start_index,int offset);
+
 }
