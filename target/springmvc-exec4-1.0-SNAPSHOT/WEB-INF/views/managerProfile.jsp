@@ -13,7 +13,9 @@
 　邮箱：<c:out value="${manager.email}" /><br/><br/>
 联系方式：<c:out value="${manager.phoneNo}" /><br/><br/>
 是否删除：<c:out value="${manager.delete}" /><br/><br/>
-
+<form method="get" action="manager/update">
+    <input type="submit" value="更新个人信息">
+</form>
 <c:if test = "${not empty sessionScope.manager }">
     <a href="<c:url value="/" />">首页</a>
 </c:if>

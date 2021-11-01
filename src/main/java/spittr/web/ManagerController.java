@@ -32,17 +32,18 @@ import spittr.domain.Manager;
  * 在每个RequestMapping的方法执行前，
  * SessionAttributesHandler会将HttpSession中的被@SessionAttributes注解的属性写入到新的Model中。
  */
-@SessionAttributes({ "manager" })
+@SessionAttributes({"manager"})
 @RequestMapping("/manager")
 public class ManagerController {
 
     @Autowired
     private ManagerRepository managerRepository;
 
-    @RequestMapping(value = "/login" ,method = GET)
-    public String showLoginForm(){
+    @RequestMapping(value = "/login", method = GET)
+    public String showLoginForm() {
         return "managerLoginForm";
     }
+
     @RequestMapping(value = "/login", method = POST)
     public String processLogin(@RequestParam(value = "userName", defaultValue = "") String userName,
                                @RequestParam(value = "password", defaultValue = "") String password, HttpSession session) {
@@ -57,17 +58,25 @@ public class ManagerController {
          *
          */
 
-        Manager manager = managerRepository.findByUserName(userName,password);
+        Manager manager = managerRepository.findByUserName(userName, password);
         if (manager != null) {
             session.setAttribute("manager", manager);
-            return "redirect:/";
-        } else {
+            return "redirect:/manager/home";
+        }
+        else {
             return "loginError";
         }
 
     }
+    @RequestMapping(value = "/home", method = GET)
+    public String getHomePage(Model model) {
+        model.addAttribute(new Manager());
+        return "managerHome";
+    }
+
     /**
      * 进入注册
+     *
      * @param model
      * @return
      */
@@ -79,6 +88,7 @@ public class ManagerController {
 
     /**
      * 提交注册信息，提交成功后跳转到用户信息
+     *
      * @param manager
      * @param errors
      * @return
@@ -96,6 +106,7 @@ public class ManagerController {
 
     /**
      * 用户信息页面
+     *
      * @param userName
      * @param model
      * @return
@@ -112,27 +123,51 @@ public class ManagerController {
         if (manager != null) {
             model.addAttribute(manager);
             return "managerProfile";
-        } else {
+        }
+        else {
             return "redirect:/";
         }
     }
 
-    @RequestMapping(value = "/work" ,method = GET)
-    public String showManagerPage(){
+    @RequestMapping(value = "/work", method = GET)
+    public String showManagerPage() {
         return "checking";
     }
 
-
-    @RequestMapping(value = "/pass/{spittleId}" ,method = POST)
-    public String passSpittle(@PathVariable("spittleId") long spittleId )
-            throws Exception {
-        System.out.println(spittleId);
-        return "checking";
+    @RequestMapping(value = "/list", method = GET)
+    public String getManagerList() {
+        return "managerList";
     }
 
-    @RequestMapping(value = "/delete" ,method = POST)
-    public String deleteSpittle(HttpServletRequest request, SpittleForm form, Model model, HttpSession session)
-            throws Exception {
-        return "checking";
+    @RequestMapping(value = "/list", method = POST)
+    public String processList() {
+        return "managerList";
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = POST)
+    public String processDelete(@RequestParam String id,HttpSession session) {
+        if (((Manager)session.getAttribute("manager")).getId()==Long.parseLong(id)){
+            System.out.println("you can not delete yourself");
+        }else {
+            managerRepository.delete(Long.parseLong(id));
+        }
+        return "managerList";
+    }
+
+    @RequestMapping(value = "/update", method = GET)
+    public String getUpdatePage() {
+        return "managerInfoUpdate";
+    }
+
+    @RequestMapping(value = "/update", method = POST)
+    public String processUpdate(HttpSession session,HttpServletRequest request) {
+        Manager manager=(Manager)session.getAttribute("manager");
+        manager.setFullname(request.getParameter("fullname"));
+        manager.setEmail(request.getParameter("email"));
+        manager.setPhoneNo(request.getParameter("phoneNo"));
+        manager.setUserName(request.getParameter("userName"));
+        manager.setPassword(request.getParameter("password"));
+        managerRepository.update(manager);
+        return "managerProfile";
     }
 }

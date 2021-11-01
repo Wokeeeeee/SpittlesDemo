@@ -81,13 +81,31 @@ public class JdbcManagerRepository implements ManagerRepository {
 
     private static class ManagerRowMapper implements RowMapper<Manager> {
         public Manager mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Manager(rs.getLong("id"), rs.getString("username"), rs.getString("password"), rs.getString("full_name"),
+            return new Manager(rs.getLong("id"), rs.getString("username"), null, rs.getString("full_name"),
                     rs.getString("email"), rs.getString("phoneNo"), rs.getInt("delete"));
         }
     }
 
+    @Override
+    public List<Manager> findRange(int start_index, int offset) {
+        return jdbc.query(SELECT_RANGE_MANAGER, new ManagerRowMapper(), start_index * offset, offset);
+    }
+
+    @Override
+    public void delete(Long id) {
+        jdbc.update("update Manager set delete=1 where id =?", id);
+    }
+
+    @Override
+    public void update(Manager manager) {
+        jdbc.update(UPDATE_MANAGER, manager.getUserName(), manager.getFullname(), manager.getPassword(), manager.getEmail(), manager.getPhoneNo(), manager.getId());
+    }
+
     private static final String INSERT_Manager = "insert into Manager (username, password, full_name, email,phoneNo,delete) values (?, ?,?, ?, ?, ?)";
 
-    private static final String SELECT_Manager = "select id,username, password,full_name, email, phoneNo ,delete from Manager";
+    private static final String SELECT_Manager = "select id,username,full_name, email, phoneNo ,delete from Manager";
 
+    private static final String SELECT_RANGE_MANAGER = "select id,username,full_name, email, phoneNo ,delete from Manager, limit ?,?";
+
+    private static final String UPDATE_MANAGER = "update Manager set username=?,full_name=?,password=?,email=?,phoneNo=? where id =?";
 }

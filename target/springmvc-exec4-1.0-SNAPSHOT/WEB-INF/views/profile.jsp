@@ -10,7 +10,7 @@
     用户名：<c:out value="${spitter.userName}" /><br/><br/>
     　姓名：<c:out value="${spitter.lastName}" /> <c:out value="${spitter.firstName}" /> <br/><br/>
     　邮箱：<c:out value="${spitter.email}" /><br/><br/>
-    
+
     <c:if test = "${not empty sessionScope.spitter }">
     		<a href="<c:url value="/" />">首页</a>
    	</c:if>

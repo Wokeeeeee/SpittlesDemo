@@ -57,4 +57,11 @@ public interface ManagerRepository {
      */
     List<Manager> findAll();
 
+
+    List<Manager> findRange(int start_index,int offset);
+
+    void delete(Long id);
+
+    void update(Manager manager);
+
 }
