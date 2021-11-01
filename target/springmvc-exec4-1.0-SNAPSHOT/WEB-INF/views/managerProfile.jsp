@@ -17,7 +17,7 @@
     <input type="submit" value="更新个人信息">
 </form>
 <c:if test = "${not empty sessionScope.manager }">
-    <a href="<c:url value="/" />">首页</a>
+    <a href="home">返回管理员首页</a>
 </c:if>
 </body>
 </html>

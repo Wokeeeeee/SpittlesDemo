@@ -101,7 +101,7 @@ public class SpitterController {
     int Scount = 20;
     int ScurPage = 1;
 
-    @RequestMapping(value = "list", method = GET)
+    @RequestMapping(value = "/list", method = GET)
     public String getSpitterList(HttpSession session) {
         int maxPage = (int) (spitterRepository.count() % Scount == 0 ? (spitterRepository.count() / Scount) : (spitterRepository.count() / Scount + 1));
 
@@ -113,7 +113,7 @@ public class SpitterController {
         return "spitterList";
     }
 
-    @RequestMapping(value = "list", method = POST)
+    @RequestMapping(value = "/list", method = POST)
     public String processList(@RequestParam(value = "Scount") int c, @RequestParam(value = "ScurPage") int p) {
         System.out.println("spitterList post");
         this.Scount = c;
@@ -121,4 +121,9 @@ public class SpitterController {
         return "redirect:/spitter/list";
     }
 
+    @RequestMapping(value = "/logout", method = GET)
+    public String processLogout(HttpSession session) {
+        session.removeAttribute("spitter");
+        return "redirect:/";
+    }
 }

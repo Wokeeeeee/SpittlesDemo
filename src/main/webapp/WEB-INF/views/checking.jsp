@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/style.css" />">
 </head>
 <body>
+<h1>审核吐槽贴</h1>
 <div class="spittleList">
     <h1>待审核内容</h1>
     <c:choose>
@@ -58,5 +59,9 @@
         </div>
     </ul>
 </div>
+
+<c:if test = "${not empty sessionScope.manager }">
+    <a href="/springmvc_exec4_war_exploded/manager/home">返回管理员首页</a>
+</c:if>
 </body>
 </html>

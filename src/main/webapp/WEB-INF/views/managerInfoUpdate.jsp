@@ -33,8 +33,5 @@
 
 </form>
 
-<c:if test="${not empty sessionScope.manager }">
-    <a href="<c:url value="manager" />">管理员首页</a>
-</c:if>
 </body>
 </html>

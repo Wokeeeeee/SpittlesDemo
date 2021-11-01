@@ -18,14 +18,10 @@
         <a href="<c:url value="/spittles" />">吐个槽</a> |
         <a href="<c:url value="/logout" />">注销</a>
     </c:when>
-    <c:when test="${not empty sessionScope.manager }">
-        <h1><c:out value="${manager.fullname}"/></h1><br/>
-        <a href="<c:url value="/manager/work" />">审核吐槽</a>
-    </c:when>
     <c:otherwise>
         <a href="<c:url value="/login" />">登录</a> |
-        <a href="<c:url value="/spitter/register" />">注册</a>
-        <a href="<c:url value="/manager/login" />">管理员登录</a>
+        <a href="<c:url value="/spitter/register" />">注册</a> |
+        <a href="<c:url value="/manager/login" />">管理员入口</a>
     </c:otherwise>
 </c:choose>
 

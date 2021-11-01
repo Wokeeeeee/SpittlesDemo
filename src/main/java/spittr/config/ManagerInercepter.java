@@ -13,7 +13,7 @@ public class ManagerInercepter implements HandlerInterceptor {
         System.out.println("prehandle");
         HttpSession session = httpServletRequest.getSession();
         if (session.getAttribute("manager") == null) {
-            httpServletRequest.getRequestDispatcher("/manager/login").forward(httpServletRequest, httpServletResponse);
+            httpServletResponse.sendRedirect("/springmvc_exec4_war_exploded/manager/login");
             return false;
         }
         return true;

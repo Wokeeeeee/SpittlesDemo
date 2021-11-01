@@ -12,6 +12,9 @@
 <head>
     <title>管理员人员管理</title>
 </head>
+<c:if test = "${not empty sessionScope.manager }">
+    <a href="home">返回管理员首页</a>
+</c:if>
 <body>
 <h1>管理员${manager.userName}</h1>
 <h2><a href="register">1.添加管理员</a><br></h2>

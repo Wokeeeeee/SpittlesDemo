@@ -17,6 +17,7 @@
 </head>
 <body>
 <h2>spittleList</h2>
+
 <c:choose>
     <c:when test="${empty spitterList}">
         there is no spitters.
