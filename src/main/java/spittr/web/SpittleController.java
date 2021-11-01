@@ -22,7 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * 吐槽控制器类
- * 
+ *
  * @author wben
  * @version v1.0
  */
@@ -30,46 +30,63 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/spittles")
 public class SpittleController {
 
-	@Autowired
-	private SpittleRepository spittleRepository;
+    @Autowired
+    private SpittleRepository spittleRepository;
 
-	/**
-	 * 最新吐槽
-	 * @param count
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Spittle> spittles(@RequestParam(value = "count", defaultValue = "20") int count) {
-		return spittleRepository.findRecent(count,0);
-	}
+    int SPcount = 20;
+    int SPcurPage = 1;
 
-	/**
-	 * 查看单个吐槽
-	 * @param spittleId
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = "/{spittleId}", method = RequestMethod.GET)
-	public String spittle(@PathVariable("spittleId") long spittleId, Model model) {
-		model.addAttribute(spittleRepository.findOne(spittleId));
-		return "spittle";
-	}
+    /**
+     * 最新吐槽
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public List<Spittle> spittles(HttpSession session) {
+        int maxPage = (int) (spittleRepository.count() % SPcount == 0 ? (spittleRepository.count() / SPcount) : (spittleRepository.count() / SPcount + 1));
 
-	/**
-	 * 新建一个吐槽
-	 * @param request
-	 * @param form
-	 * @param model
-	 * @param session
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping(method = RequestMethod.POST)
-	public String saveSpittle(HttpServletRequest request, SpittleForm form, Model model, HttpSession session)
-			throws Exception {
-		spittleRepository
-				.save(new Spittle(null, (Spitter) session.getAttribute("spitter"), form.getMessage(), new Date()));
-		return "redirect:/spittles";
-	}
+        session.setAttribute("SPcount", SPcount);
+        session.setAttribute("SPcurPage", SPcurPage);
+        session.setAttribute("SPmaxPage", maxPage);
+        return spittleRepository.findRecent(SPcount, SPcurPage-1);
+    }
+
+    @RequestMapping(value = "/jump",method = POST)
+    private String processJump(@RequestParam(value = "SPcount") int c, @RequestParam(value = "SPcurPage") int p) {
+        System.out.println("spittles list post");
+        SPcount = c;
+        SPcurPage = p;
+        return "redirect:/spittles";
+    }
+
+    /**
+     * 查看单个吐槽
+     *
+     * @param spittleId
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/{spittleId}", method = RequestMethod.GET)
+    public String spittle(@PathVariable("spittleId") long spittleId, Model model) {
+        model.addAttribute(spittleRepository.findOne(spittleId));
+        return "spittle";
+    }
+
+    /**
+     * 新建一个吐槽
+     *
+     * @param request
+     * @param form
+     * @param model
+     * @param session
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(method = RequestMethod.POST)
+    public String saveSpittle(HttpServletRequest request, SpittleForm form, Model model, HttpSession session)
+            throws Exception {
+        spittleRepository
+                .save(new Spittle(null, (Spitter) session.getAttribute("spitter"), form.getMessage(), new Date()));
+        return "redirect:/spittles";
+    }
 
 }

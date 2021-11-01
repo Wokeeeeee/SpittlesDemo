@@ -20,19 +20,33 @@
       </form>
     </div>
     <a href="<c:url value="/" />">返回首页</a>
-    <div class="spittleList">
-      <h1>最近吐槽</h1>
-      <ul class="spittleList">
-        <c:forEach items="${spittleList}" var="spittle" >
-          <li id="spittle_<c:out value="${spittle.id}"/>">
-            <div class="spittleMessage"><c:out value="${spittle.message}" /></div>
-            <div class="spittleTime">
-              <fmt:formatDate value="${spittle.postedTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
-              by <c:out value="${spittle.spitter.userName }" />
-            </div>
-          </li>
-        </c:forEach>
-      </ul>
-      </div>
+    <c:choose>
+      <c:when test="${empty spittleList}">
+        spittles need to be checked by managers, and now there is no spittle yet.
+      </c:when>
+      <c:otherwise>
+        第1页共${SPmaxPage}页
+        <form action="spittles/jump" method="post" id="spittles_sub">
+          每页显示个数：<input type="number" name="SPcount" min="2" max="50" value="${SPcount}">
+          <input type="submit" value="跳转">到第<input type="number" value="${SPcurPage}" name="SPcurPage" min="1"
+                                                   max="${SPmaxPage}">页
+        </form>
+        <div class="spittleList">
+          <h1>最近吐槽</h1>
+          <ul class="spittleList">
+            <c:forEach items="${spittleList}" var="spittle" >
+              <li id="spittle_<c:out value="${spittle.id}"/>">
+                <div class="spittleMessage"><c:out value="${spittle.message}" /></div>
+                <div class="spittleTime">
+                  <fmt:formatDate value="${spittle.postedTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                  by <c:out value="${spittle.spitter.userName }" />
+                </div>
+              </li>
+            </c:forEach>
+          </ul>
+        </div>
+      </c:otherwise>
+    </c:choose>
+
   </body>
 </html>
