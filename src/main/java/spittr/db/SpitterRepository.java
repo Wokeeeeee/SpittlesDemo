@@ -64,6 +64,10 @@ public interface SpitterRepository {
 	 */
 	List<Spitter> findAll();
 
+	/**
+	 *取得某范围内的吐槽者
+	 * 用于分页
+	 */
 	List<Spitter> findRange(int start_index,int offset);
 
 }

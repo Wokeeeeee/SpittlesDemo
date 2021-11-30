@@ -20,7 +20,16 @@ public interface SpittleRepository {
 	 */
 	long count();
 
+	/**
+	 * 取得审核通过的吐槽数量
+	 * @return
+	 */
 	long countPass();
+
+	/**
+	 * 还未审核的吐槽数量
+	 * @return
+	 */
 	long countUncheck();
 
 	/**
@@ -39,11 +48,25 @@ public interface SpittleRepository {
 	 */
 	List<Spittle> findRecent(int count,int start_index);
 
-
+	/**
+	 * 获得指定数量的未检查吐槽贴
+	 * @param count
+	 * @param start_index
+	 * @return
+	 */
 	List<Spittle> findNotCheckedRecent(int count,int start_index);
 
+	/**
+	 * 删除吐槽
+	 * @param id
+	 */
 	void deleteUnpassed(Long id);
 
+	/**
+	 * 通过吐槽
+	 * @param id
+	 * @param manager
+	 */
 	void updatePassed(Long id,Manager manager);
 
 	/**

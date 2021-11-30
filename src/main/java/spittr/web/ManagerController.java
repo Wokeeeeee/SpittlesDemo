@@ -39,11 +39,26 @@ public class ManagerController {
     @Autowired
     private ManagerRepository managerRepository;
 
+    /**
+     * 管理员登录 页面获得
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/login", method = GET)
-    public String showLoginForm() {
+    public String showLoginForm(HttpSession session) {
+        if (session.getAttribute("manager")!=null){
+            return "managerHome";
+        }
         return "managerLoginForm";
     }
 
+    /**
+     * 处理登录信息，登陆成功后跳转到管理员首页
+     * @param userName
+     * @param password
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/login", method = POST)
     public String processLogin(@RequestParam(value = "userName", defaultValue = "") String userName,
                                @RequestParam(value = "password", defaultValue = "") String password, HttpSession session) {
@@ -69,6 +84,11 @@ public class ManagerController {
 
     }
 
+    /**
+     * 获得管理员首页
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/home", method = GET)
     public String getHomePage(Model model) {
         return "managerHome";
@@ -126,14 +146,26 @@ public class ManagerController {
         }
     }
 
+    /**
+     * 进入审核页面
+     * @return
+     */
     @RequestMapping(value = "/work", method = GET)
     public String showManagerPage() {
         return "checking";
     }
-
+    /**
+     * 页面显示个数和当前显示页面
+     * 用于分页
+     */
     private int Mcount = 20;
     private int McurPage = 1;
 
+    /**
+     * 进入管理员列表
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/list", method = GET)
     public String getManagerList(HttpSession session) {
         //更新当前参数
@@ -146,6 +178,12 @@ public class ManagerController {
         return "managerList";
     }
 
+    /**
+     * 处理分页跳转操作
+     * @param Mcount
+     * @param McurPage
+     * @return
+     */
     @RequestMapping(value = "/list", method = POST)
     public String processList(@RequestParam(value = "Mcount")int Mcount,@RequestParam(value = "McurPage") int McurPage) {
         this.Mcount =Mcount;
@@ -153,6 +191,12 @@ public class ManagerController {
         return "redirect:/manager/list";
     }
 
+    /**
+     * 删除其他管理员
+     * @param id
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/delete/{id}", method = POST)
     public String processDelete(@PathVariable String id, HttpSession session) {
         Manager manager = (Manager) session.getAttribute("manager");
@@ -166,11 +210,21 @@ public class ManagerController {
         return "redirect:/manager/list";
     }
 
+    /**
+     * 进入更新个人信息页面
+     * @return
+     */
     @RequestMapping(value = "/update", method = GET)
     public String getUpdatePage() {
         return "managerInfoUpdate";
     }
 
+    /**
+     * 处理更新页面表单数据，更新成功进入管理员个人主页
+     * @param session
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/update", method = POST)
     public String processUpdate(HttpSession session, HttpServletRequest request) {
         Manager manager = (Manager) session.getAttribute("manager");

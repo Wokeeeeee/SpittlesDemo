@@ -57,11 +57,24 @@ public interface ManagerRepository {
      */
     List<Manager> findAll();
 
-
+    /**
+     * 获得某范围内的管理员名单，用于分页
+     * @param start_index
+     * @param offset
+     * @return
+     */
     List<Manager> findRange(int start_index,int offset);
 
+    /**
+     * 删除某个管理员，将管理员的delete属性置为1
+     * @param id
+     */
     void delete(Long id);
 
+    /**
+     * 更新管理员信息
+     * @param manager
+     */
     void update(Manager manager);
 
 }

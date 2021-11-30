@@ -1,4 +1,5 @@
 ﻿<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page session="true" %>
 <html>
   <head>
@@ -10,6 +11,7 @@
   <body>
     <h1>登录有误，请重新尝试</h1>
     <a href="<c:url value="/login" />">登录</a> |
-    <a href="<c:url value="/spitter/register" />">注册</a> 
+    <a href="<c:url value="/spitter/register" />">注册</a> |
+    <a href="<c:url value="/manager/login" />">管理员登录</a>
   </body>
 </html>

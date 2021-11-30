@@ -35,7 +35,7 @@
 <h3><a href="../spitter/logout">退出登录</a></h3>
 <br>
 <br>
-<h3><a href="springmvc_exec4_war_exploded/">返回首页</a></h3>
+<h3><a href="<c:url value="/" />">返回首页</a></h3>
 <br>
 </body>
 </html>

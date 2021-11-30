@@ -9,26 +9,44 @@ public class Manager {
 
     private Long id;
 
+    /**
+     * 管理员名
+     */
     @NotNull
     @Size(min = 5, max = 16)
     private String userName;
 
+    /**
+     * 管理员密码
+     */
     @NotNull
     @Size(min = 5, max = 25)
     private String password;
 
+    /**
+     * 管理员真实姓名
+     */
     @NotNull
     @Size(min = 2, max = 30)
     private String fullname;
 
+    /**
+     * 管理员邮箱
+     */
     @NotNull
     @Email
     private String email;
 
+    /**
+     * 管理员 电话号码
+     */
     @NotNull
     @Size(min = 5, max = 20)
     private String phoneNo;
 
+    /**
+     * 管理员是否删除
+     */
     @NotNull
     private int delete;
 

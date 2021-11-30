@@ -1,4 +1,5 @@
 ﻿<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page session="true" %>
 <html>
 <head>
@@ -16,7 +17,9 @@
 <c:choose>
     <c:when test="${not empty sessionScope.spitter }">
         <a href="<c:url value="/spittles" />">吐个槽</a> |
-        <a href="<c:url value="/logout" />">注销</a>
+        <a href="<c:url value="/logout" />">注销</a> |
+        <a href="<c:url value="/spitter/${spitter.userName}" />">个人主页</a> |
+        <a href="<c:url value="/manager/login" />">管理员入口</a>
     </c:when>
     <c:otherwise>
         <a href="<c:url value="/login" />">登录</a> |

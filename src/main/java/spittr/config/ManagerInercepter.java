@@ -7,13 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * 管理员拦截器
+ * 管理员必须登录才能执行管理员操作
+ */
 public class ManagerInercepter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        System.out.println("prehandle");
         HttpSession session = httpServletRequest.getSession();
         if (session.getAttribute("manager") == null) {
-            httpServletResponse.sendRedirect("/springmvc_exec4_war_exploded/manager/login");
+            httpServletResponse.sendRedirect("/springmvc-exec4-1.0-SNAPSHOT/manager/login");
             return false;
         }
         return true;

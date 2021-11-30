@@ -32,7 +32,10 @@ public class SpittleController {
 
     @Autowired
     private SpittleRepository spittleRepository;
-
+    /**
+     * 页面显示个数和当前显示页面
+     * 用于分页
+     */
     int SPcount = 20;
     int SPcurPage = 1;
 

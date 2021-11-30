@@ -97,10 +97,18 @@ public class SpitterController {
             return "redirect:/";
         }
     }
-
+    /**
+     * 页面显示个数和当前显示页面
+     * 用于分页
+     */
     int Scount = 20;
     int ScurPage = 1;
 
+    /**
+     * 获取spitter列表
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/list", method = GET)
     public String getSpitterList(HttpSession session) {
         int maxPage = (int) (spitterRepository.count() % Scount == 0 ? (spitterRepository.count() / Scount) : (spitterRepository.count() / Scount + 1));
@@ -113,6 +121,12 @@ public class SpitterController {
         return "spitterList";
     }
 
+    /**
+     * 处理分页信息
+     * @param c
+     * @param p
+     * @return
+     */
     @RequestMapping(value = "/list", method = POST)
     public String processList(@RequestParam(value = "Scount") int c, @RequestParam(value = "ScurPage") int p) {
         System.out.println("spitterList post");
@@ -121,6 +135,11 @@ public class SpitterController {
         return "redirect:/spitter/list";
     }
 
+    /**
+     * 退出登录，返回首页
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/logout", method = GET)
     public String processLogout(HttpSession session) {
         session.removeAttribute("spitter");

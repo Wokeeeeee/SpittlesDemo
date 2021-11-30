@@ -3,6 +3,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <%--
   Created by IntelliJ IDEA.
   User: lxy
@@ -10,16 +12,13 @@
   Time: 14:50
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>manager check</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/style.css" />">
 </head>
 <body>
-<c:if test = "${not empty sessionScope.manager }">
-    <a href="/springmvc_exec4_war_exploded/manager/home">返回管理员首页</a>
-</c:if>
+<h1>审核吐槽贴</h1>
 <div class="spittleList">
     <h1>待审核内容</h1>
     <c:choose>
@@ -50,8 +49,8 @@
                         </div>
                     </li>
                     <form action="checking/check/${spittle.id}" method="post">
-                        <input name="check" type="checkbox" value="pass" checked="checked">通过
-                        <input name="check" type="checkbox" value="delete">删除
+                        <input name="check" type="radio" value="pass" checked="checked">通过
+                        <input name="check" type="radio" value="delete">删除
                         <input type="submit" value="提交" name="submit">
                     </form>
                     <br>
@@ -61,5 +60,9 @@
         </div>
     </ul>
 </div>
+
+<c:if test = "${not empty sessionScope.manager }">
+    <a href="<c:url value="/manager/home" />">返回管理员首页</a>
+</c:if>
 </body>
 </html>

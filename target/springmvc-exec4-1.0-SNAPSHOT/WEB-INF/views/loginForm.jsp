@@ -1,10 +1,11 @@
 ﻿<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
   <head>
     <title>吐槽吧</title>
     <link rel="stylesheet" type="text/css" 
-          href="<c:url value="/ex5/resources/style.css" />" >
+          href="<c:url value="../../resources/style.css" />" >
   </head>
   <body>
     <h1>登录</h1>
